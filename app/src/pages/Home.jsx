@@ -47,43 +47,32 @@ export default function Home() {
     maxPrice: 50,
     maxDistance: 10
   });
+  const [locationError, setLocationError] = useState(null);
 
   const { data: baskets = [], isLoading } = useQuery({
     queryKey: ['baskets', 'available'],
     queryFn: () => base44.entities.Basket.filter({ status: 'available' }, '-created_date'),
   });
 
-  useEffect(() => {
-    // Try to get user location on mount
-    if (navigator.geolocation) {
+  const getCurrentLocation = () => {
+    if ("geolocation" in navigator) {
+      setIsLocating(true);
+      setLocationError(null);
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude });
+          setIsLocating(false);
         },
-        () => {
-          // Silently fail
-        }
+        (error) => {
+          console.error("Erreur de géolocalisation:", error);
+          setLocationError(error.code === 1 ? "permission_denied" : "generic_error");
+          setIsLocating(false);
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
-    }
-  }, []);
-
-  const getCurrentLocation = () => {
-    setIsLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setUserLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        });
-        setIsLocating(false);
-      },
-      () => {
-        setIsLocating(false);
-      }
-    );
+    } else {
+      setLocationError("not_supported");
   };
 
   // Filter and sort baskets
@@ -168,31 +157,39 @@ export default function Home() {
             <div className="bg-white rounded-2xl p-2 shadow-2xl shadow-emerald-900/20">
               <div className="flex items-center gap-2">
                 <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <Input
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Rechercher un panier, un vendeur..."
-                    className="pl-12 h-12 border-0 bg-transparent text-base focus-visible:ring-0"
+                    placeholder="Rechercher un panier, un commerçant..."
+                    className="w-full pl-12 pr-4 py-6 bg-white/10 border-white/20 text-white placeholder:text-emerald-100 rounded-2xl focus:bg-white focus:text-gray-900 transition-all text-lg"
                   />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-emerald-100" />
                 </div>
-                <Button
+                <Button 
                   onClick={getCurrentLocation}
                   disabled={isLocating}
-                  variant="outline"
-                  className="h-12 px-4 gap-2 shrink-0"
+                  variant="secondary"
+                  className="py-6 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all gap-2"
                 >
                   {isLocating ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
                     <Locate className="w-5 h-5" />
                   )}
-                  <span className="hidden sm:inline">Ma position</span>
+                  {userLocation ? 'Position actualisée' : 'Me localiser'}
                 </Button>
               </div>
             </div>
+            {locationError && (
+              <p className="mt-4 text-emerald-100 text-sm flex items-center justify-center gap-2 animate-in fade-in slide-in-from-top-1">
+                <MapPin className="w-4 h-4" />
+                {locationError === 'permission_denied' 
+                  ? "Veuillez autoriser la géolocalisation pour voir les paniers proches." 
+                  : "Erreur lors de la détection de votre position."}
+              </p>
+            )}
 
-            {userLocation && (
+            {userLocation && !locationError && (
               <p className="text-center text-emerald-100 text-sm mt-3 flex items-center justify-center gap-2">
                 <MapPin className="w-4 h-4" />
                 Position détectée • Affichage par distance
