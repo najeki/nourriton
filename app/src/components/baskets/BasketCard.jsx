@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Leaf, ShoppingBag, Heart } from "lucide-react";
+import { MapPin, Clock, Leaf, ShoppingBag, Heart, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Link } from "react-router-dom";
@@ -201,10 +201,7 @@ export default function BasketCard({ basket, distance }) {
               {basket.seller_type === 'commercant' ? '🏪' : '👤'} {basket.seller_name}
             </span>
             <VendorStatusBadge
-              sellerType={basket.seller_type}
-              onboardingCompleted={basket.seller_onboarding_completed}
-              salesCount={basket.seller_sales_count}
-              size="sm"
+              status={basket.seller_type}
             />
             <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover/seller:text-emerald-500 group-hover/seller:translate-x-0.5 transition-all opacity-0 group-hover/seller:opacity-100" />
           </Link>
