@@ -183,27 +183,33 @@ export default function BasketCard({ basket, distance }) {
               Anti-gaspi
             </div>
           </div>
-
-          <div className="mt-3 pt-3 border-t border-gray-100 space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-500">
-                {basket.pickup_date && format(new Date(basket.pickup_date), "EEEE d MMMM", { locale: fr })}
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-600">
-                {basket.seller_type === 'commercant' ? '🏪' : '👤'} {basket.seller_name}
-              </span>
-              <VendorStatusBadge
-                sellerType={basket.seller_type}
-                onboardingCompleted={basket.seller_onboarding_completed}
-                salesCount={basket.seller_sales_count}
-                size="sm"
-              />
-            </div>
-          </div>
         </div>
       </Link>
+
+      <div className="px-4 pb-4">
+        <div className="pt-3 border-t border-gray-100 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-500">
+              {basket.pickup_date && format(new Date(basket.pickup_date), "EEEE d MMMM", { locale: fr })}
+            </div>
+          </div>
+          <Link 
+            to={`${createPageUrl("SellerProfile")}?id=${basket.seller_id}`}
+            className="flex items-center gap-2 hover:bg-gray-50 p-1.5 rounded-lg transition-colors group/seller w-fit"
+          >
+            <span className="text-sm font-medium text-gray-600 group-hover/seller:text-emerald-600 transition-colors">
+              {basket.seller_type === 'commercant' ? '🏪' : '👤'} {basket.seller_name}
+            </span>
+            <VendorStatusBadge
+              sellerType={basket.seller_type}
+              onboardingCompleted={basket.seller_onboarding_completed}
+              salesCount={basket.seller_sales_count}
+              size="sm"
+            />
+            <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover/seller:text-emerald-500 group-hover/seller:translate-x-0.5 transition-all opacity-0 group-hover/seller:opacity-100" />
+          </Link>
+        </div>
+      </div>
     </Card>
   );
 }
