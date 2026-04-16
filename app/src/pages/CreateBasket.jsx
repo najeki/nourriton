@@ -693,8 +693,8 @@ export default function CreateBasket() {
           {/* Pickup */}
           <Card className="p-6 border-0 shadow-sm space-y-6">
             <div>
-              <Label className="text-base font-semibold">
-                Adresse de retrait <span className="text-rose-500">*</span>
+              <Label className="text-base font-semibold flex items-center gap-2">
+                Lieu de rendez-vous <span className="text-rose-500">*</span>
               </Label>
               <div className="mt-2">
                 <LocationPicker
@@ -702,8 +702,14 @@ export default function CreateBasket() {
                   initialAddress={formData.pickup_address}
                   initialLat={formData.pickup_latitude}
                   initialLng={formData.pickup_longitude}
-                  placeholder="Entrez l'adresse de retrait..."
+                  placeholder="Ex: Sortie métro, place publique, devant le magasin..."
                 />
+              </div>
+              <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100 flex gap-3">
+                <Info className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                <p className="text-sm text-emerald-800">
+                  <strong>💡 Conseil de sécurité :</strong> Pour préserver votre vie privée, nous vous recommandons de fixer le rendez-vous dans un <strong>lieu public</strong> (devant un commerce, une station de métro, une place) plutôt qu'à votre adresse personnelle exacte.
+                </p>
               </div>
             </div>
 

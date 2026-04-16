@@ -73,6 +73,7 @@ export default function Home() {
       );
     } else {
       setLocationError("not_supported");
+    }
   };
 
   // Filter and sort baskets
@@ -161,9 +162,9 @@ export default function Home() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Rechercher un panier, un commerçant..."
-                    className="w-full pl-12 pr-4 py-6 bg-white/10 border-white/20 text-white placeholder:text-emerald-100 rounded-2xl focus:bg-white focus:text-gray-900 transition-all text-lg"
+                    className="w-full pl-12 pr-4 py-6 bg-gray-50 border-gray-100 text-gray-900 placeholder:text-gray-400 rounded-2xl focus:bg-white transition-all text-lg"
                   />
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-emerald-100" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
                 </div>
                 <Button 
                   onClick={getCurrentLocation}

@@ -130,9 +130,11 @@ export default function BasketDetail() {
   const handleContact = async () => {
     setIsCreatingConv(true);
     try {
+      // Utilisation de filtres d'égalité simples comme demandé
       const existingConvs = await base44.entities.Conversation.filter({
         basket_id: basketId,
-        participant_ids: { $all: [currentUser.id, basket.seller_id] }
+        buyer_id: currentUser.id,
+        seller_id: basket.seller_id
       });
 
       if (existingConvs.length > 0) {
@@ -140,12 +142,19 @@ export default function BasketDetail() {
       } else {
         const conv = await base44.entities.Conversation.create({
           basket_id: basketId,
-          participant_ids: [currentUser.id, basket.seller_id],
-          last_message_at: new Date().toISOString()
+          buyer_id: currentUser.id,
+          buyer_name: currentUser.full_name,
+          seller_id: basket.seller_id,
+          seller_name: basket.seller_name,
+          basket_title: basket.title,
+          last_message_at: new Date().toISOString(),
+          unread_count_buyer: 0,
+          unread_count_seller: 0
         });
         navigate(createPageUrl('Messages') + `/${conv.id}`);
       }
     } catch (error) {
+      console.error("Error creating/finding conversation:", error);
       toast.error('Erreur lors de la création de la conversation');
     }
     setIsCreatingConv(false);
@@ -348,14 +357,14 @@ export default function BasketDetail() {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-emerald-500 mt-0.5" />
                   <div>
-                    <p className="font-medium text-gray-900">Adresse</p>
+                    <p className="font-medium text-gray-900">Lieu de rendez-vous</p>
                     {(basket.reserved_by === currentUser?.id || basket.seller_id === currentUser?.id) ? (
                       <p className="text-gray-600">{basket.pickup_address}</p>
                     ) : (
                       <p className="text-gray-600">
                         {basket.pickup_address?.split(',').slice(0, -1).join(',').trim() || basket.pickup_address?.split(',')[0]}
                         <span className="block text-xs text-amber-600 mt-1">
-                          📍 Adresse complète visible après réservation
+                          📍 Lieu exact visible après réservation
                         </span>
                       </p>
                     )}
