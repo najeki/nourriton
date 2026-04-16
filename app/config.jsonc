@@ -1,0 +1,7 @@
+{
+    "projectId": "695d69568e165f665b4797af",
+    "name": "Nourriton",
+    "functions": {
+        "source": "./base44/functions"
+    }
+}

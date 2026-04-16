@@ -1,0 +1,23 @@
+# Local environment variables
+.env
+.env.*
+!.env.template
+.env.production
+
+# macOS specific files
+.DS_Store
+
+# Node modules (just in case they are ever present at the root)
+node_modules/
+
+# Temporary and initialization directories
+.tmp/
+tmp_base44_init/
+
+# Netlify local cache, if any
+.netlify/
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
