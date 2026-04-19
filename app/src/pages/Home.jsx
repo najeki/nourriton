@@ -143,9 +143,9 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="text-center text-white mb-10">
             <h1 className="text-4xl lg:text-6xl font-bold mb-4">
-              Sauvez de la nourriture,
+              Faites des économies,
               <br />
-              <span className="text-amber-300">faites des économies</span>
+              <span className="text-amber-300">sauvez de la nourriture</span>
             </h1>
             <p className="text-lg lg:text-xl text-emerald-100 max-w-2xl mx-auto">
               Découvrez des paniers anti-gaspi à petit prix près de chez vous.
